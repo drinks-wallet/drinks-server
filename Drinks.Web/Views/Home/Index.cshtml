@@ -1,0 +1,34 @@
+﻿@model Drinks.Web.Models.Home.IndexModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Log in</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        @Html.BootstrapValidationSummary()
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { role = "form" }))
+        {
+            <div class="form-group">
+                <label>Username</label>
+                <div class="input-group input-group-lg">
+                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control input-lg", placeholder = "levi.botelho" })<span class="input-group-addon">@@satimo.fr</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                @Html.PasswordFor(x => x.Password, new { @class = "form-control input-lg", placeholder = "••••••••" })
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        }
+    </div>
+</div>

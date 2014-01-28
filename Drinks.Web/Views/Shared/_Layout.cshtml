@@ -1,0 +1,67 @@
+﻿@using System.Net.Mime
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Satimo Drinks</title>
+    <link href="~/Content/Site.css" rel="stylesheet/less" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        @if (HttpContext.Current.User.Identity.IsAuthenticated && UserContext.User != null)
+        {
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Account")">SATIMO Drinks</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    @{ var currentAction = ViewContext.RouteData.Values["action"].ToString(); }
+                    <li @if (currentAction.Equals("CreateAccount", StringComparison.InvariantCultureIgnoreCase)) { <text>class="active"</text> }>@Html.ActionLink("Create Account", "CreateAccount", "Admin")</li>
+                    <li @if (currentAction.Equals("EditAccount", StringComparison.InvariantCultureIgnoreCase)) { <text> class="active" </text> }>@Html.ActionLink("Edit Account", "EditAccount", "Admin")</li>
+                    <li @if (currentAction.Equals("AddMoney", StringComparison.InvariantCultureIgnoreCase)) { <text>class="active"</text> }>@Html.ActionLink("Add Money", "AddMoney", "Admin")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">You are logged in as @UserContext.User.Name<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("My Profile", "MyProfile", "Account")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Log out", "LogOut", "Home")</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">SATIMO Drinks</a>
+            </div>
+        }
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - SATIMO Drinks Team</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>
