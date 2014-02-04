@@ -3,5 +3,5 @@
 bin
 obj
 *.user
-/Drinks.Web/Web.config
-/Drinks.Api/Web.config
+#/Drinks.Web/Web.config
+#/Drinks.Api/Web.config
