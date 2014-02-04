@@ -16,7 +16,7 @@ namespace Drinks.Tests
             var user = new User
             {
                 Username = "levi.botelho@satimo.fr",
-                Permissions = UserPermissions.CanAddMoney | UserPermissions.CanAssignBadges | UserPermissions.CanCreateAccounts | UserPermissions.CanMonitorPurchases,
+                Permissions = UserPermissions.IsAdmin | UserPermissions.CanMonitorPurchases,
                 Name = "Levi Botelho"
             };
             

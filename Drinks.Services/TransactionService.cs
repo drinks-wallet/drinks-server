@@ -68,10 +68,10 @@
 
         Transaction GenerateTransaction(ReloadRequest request)
         {
-            var executingUser = _userService.GetUser(request.UserId);
+            var executingUser = _userService.GetUser(request.ExecutorUserId);
             if (executingUser == null)
                 throw new InvalidOperationException("Invalid user ID.");
-            if (!executingUser.Permissions.HasFlag(UserPermissions.CanAddMoney))
+            if (!executingUser.Permissions.HasFlag(UserPermissions.IsAdmin))
                 throw new InsufficientPermissionsException();
             return new Transaction(request.Amount, request.UserId, request.ExecutorUserId);
         }

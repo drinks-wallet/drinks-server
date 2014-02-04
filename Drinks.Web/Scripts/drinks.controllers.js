@@ -1,7 +1,5 @@
 ﻿var drinksApp = angular.module("drinksApp", []);
 
-drinksApp.controller("EditAccountController", function($scope) {
-    $scope.selectUser = function() {
-
-    };
-});
+drinksApp.controller("EditAccountController", ["$scope", function($scope) {
+    $scope.greeting = "hello from the edit account JS controller!";
+}]);

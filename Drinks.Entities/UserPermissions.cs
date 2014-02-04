@@ -7,8 +7,6 @@
     {
         None = 0x0,
         CanMonitorPurchases = 0x1,
-        CanCreateAccounts = 0x2,
-        CanAssignBadges = 0x4,
-        CanAddMoney = 0x8
+        IsAdmin = 0x2
     }
 }

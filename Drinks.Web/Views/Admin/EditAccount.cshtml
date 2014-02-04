@@ -30,6 +30,7 @@
 }
 
 <div class="row" ng-controller="EditAccountController">
+    {{ greeting }}
     <div class="col-sm-12">
         @using (Html.BeginForm("EditAccount", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {

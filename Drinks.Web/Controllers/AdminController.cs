@@ -23,7 +23,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpGet]
-        [RequiredPrivileges(UserPermissions.CanCreateAccounts)]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
         public ActionResult CreateAccount()
         {
             var tempData = new TempDataHelper(TempData);
@@ -31,7 +31,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.CanCreateAccounts)]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
         public ActionResult CreateAccount(CreateAccountModel model)
         {
             if (!ModelState.IsValid)
@@ -54,7 +54,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpGet]
-        [RequiredPrivileges(UserPermissions.CanAddMoney)]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
         public ActionResult AddMoney()
         {
             var users = _userService.GetAllUsers();
@@ -65,7 +65,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.CanAddMoney)]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
         public ActionResult AddMoney(AddMoneyModel model)
         {
             if (!ModelState.IsValid)
@@ -82,14 +82,14 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpGet]
-        [RequiredPrivileges(UserPermissions.CanCreateAccounts)]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
         public ActionResult EditAccount()
         {
             return View(new EditAccountModel(_userService.GetAllUsers()));
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.CanCreateAccounts)]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
         public ActionResult EditAccount(EditAccountModel model)
         {
             if (!ModelState.IsValid)

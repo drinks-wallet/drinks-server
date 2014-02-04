@@ -8,16 +8,6 @@
 </div>
 <div class="checkbox-inline">
     <label>
-        @Html.CheckBoxFor(x => x.CanCreateAccounts, UserContext.User.Permissions.HasFlag(UserPermissions.CanCreateAccounts) ? new { } : (object)(new { disabled = "disabled" })) Can create accounts
-    </label>
-</div>
-<div class="checkbox-inline">
-    <label>
-        @Html.CheckBoxFor(x => x.CanAssignBadges, UserContext.User.Permissions.HasFlag(UserPermissions.CanAssignBadges) ? new { } : (object)(new { disabled = "disabled" }))Can assign badges
-    </label>
-</div>
-<div class="checkbox-inline">
-    <label>
-        @Html.CheckBoxFor(x => x.CanAddMoney, UserContext.User.Permissions.HasFlag(UserPermissions.CanAddMoney) ? new { } : (object)(new { disabled = "disabled" }))Can add money
+        @Html.CheckBoxFor(x => x.IsAdmin, UserContext.User.Permissions.HasFlag(UserPermissions.IsAdmin) ? new { } : (object)(new { disabled = "disabled" })) Is Admin
     </label>
 </div>
