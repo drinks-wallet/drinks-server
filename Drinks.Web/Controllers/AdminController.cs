@@ -97,5 +97,13 @@ namespace Drinks.Web.Controllers
 
             return RedirectToAction("EditAccount", true);
         }
+
+        [HttpPost]
+        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        public ActionResult GetUserData(int userId)
+        {
+            var user = _userService.GetUser(userId);
+            return user == null ? Json(false) : Json(new { userId = user.Id, name = user.Name, username = user.Username, badgeId = user.BadgeId });
+        }
 	}
 }

@@ -131,7 +131,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\variables.less" />
     <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\drinks.controllers.js" />
+    <Content Include="Scripts\AngularModules\drinks.js" />
     <None Include="Properties\PublishProfiles\Build Server.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
