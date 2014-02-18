@@ -1,19 +1,17 @@
 ﻿var drinksApp = angular.module("drinks", [])
-    .controller("EditAccountController", ["$http", function ($http) {
-        var self = this;
+    .controller("EditAccountController", ["$scope", "$http", function ($scope, $http) {
+        $scope.userId = "";
+        $scope.name = "";
+        $scope.username = "";
+        $scope.badgeId = "";
 
-        self.userId = "";
-        self.name = "";
-        self.username = "";
-        self.badgeId = "";
-
-        self.getUser = function () {
-            $http.post("/Admin/GetUserData", { userId: self.userId })
+        $scope.getUser = function () {
+            $http.post("/Admin/GetUserData", { userId: $scope.userId })
                 .success(function (data, status, headers, config) {
-                    self.userId = data.userId;
-                    self.name = data.name;
-                    self.username = data.username;
-                    self.badgeId = data.badgeId;
+                    $scope.userId = data.userId;
+                    $scope.name = data.name;
+                    $scope.username = data.username;
+                    $scope.badgeId = data.badgeId;
                 })
                 .error(function (data, status, headers, config) {
                     alert("Ajax Error!");
