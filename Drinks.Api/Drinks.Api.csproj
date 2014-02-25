@@ -149,6 +149,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\Build Server.pubxml" />
+    <None Include="Properties\PublishProfiles\Drinks Server.pubxml" />
     <None Include="Properties\PublishProfiles\Local IIS.pubxml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

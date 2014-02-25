@@ -4,4 +4,4 @@ bin
 obj
 *.user
 /Drinks.Api/Properties/PublishProfiles
-/Drinks.Api/Properties/PublishProfiles
+/Drinks.Web/Properties/PublishProfiles
