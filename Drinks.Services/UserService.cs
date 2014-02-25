@@ -82,14 +82,14 @@ namespace Drinks.Services
         public User ValidateUser(string username, string password)
         {
             User user;
-            //try
-            //{
+            try
+            {
                 user = _drinksContext.Users.Single(x => x.Username == username);
-            //}
-            //catch (InvalidOperationException e)
-            //{
-            //    throw new InvalidUserCredentialsException(e);
-            //}
+            }
+            catch (InvalidOperationException e)
+            {
+                throw new InvalidUserCredentialsException(e);
+            }
 
             if (_passwordHelper.ValidatePassword(password, user.Salt, user.Password))
                 return user;
