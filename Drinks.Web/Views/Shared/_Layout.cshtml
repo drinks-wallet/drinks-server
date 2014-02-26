@@ -23,9 +23,12 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     @{ var currentAction = ViewContext.RouteData.Values["action"].ToString(); }
-                    <li @if (currentAction.Equals("CreateAccount", StringComparison.InvariantCultureIgnoreCase)) { <text>class="active"</text> }>@Html.ActionLink("Create Account", "CreateAccount", "Admin")</li>
-                    <li @if (currentAction.Equals("EditAccount", StringComparison.InvariantCultureIgnoreCase)) { <text> class="active" </text> }>@Html.ActionLink("Edit Account", "EditAccount", "Admin")</li>
-                    <li @if (currentAction.Equals("AddMoney", StringComparison.InvariantCultureIgnoreCase)) { <text>class="active"</text> }>@Html.ActionLink("Add Money", "AddMoney", "Admin")</li>
+                    @if (UserContext.User.IsAdmin)
+                    {
+                        <li @if (currentAction.Equals("CreateAccount", StringComparison.InvariantCultureIgnoreCase)) { <text> class="active" </text>  }>@Html.ActionLink("Create Account", "CreateAccount", "Admin")</li>
+                        <li @if (currentAction.Equals("EditAccount", StringComparison.InvariantCultureIgnoreCase)) { <text> class="active" </text>  }>@Html.ActionLink("Edit Account", "EditAccount", "Admin")</li>
+                        <li @if (currentAction.Equals("AddMoney", StringComparison.InvariantCultureIgnoreCase)) { <text> class="active" </text>  }>@Html.ActionLink("Add Money", "AddMoney", "Admin")</li>
+                    }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -58,7 +61,7 @@
         </div>
     </div>
 
-    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
+    <script src="~/Scripts/jquery-2.1.0.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/AngularModules/drinks.js"></script>

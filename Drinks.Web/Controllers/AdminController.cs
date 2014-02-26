@@ -23,7 +23,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpGet]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult CreateAccount()
         {
             var tempData = new TempDataHelper(TempData);
@@ -31,13 +31,13 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult CreateAccount(CreateAccountModel model)
         {
             if (!ModelState.IsValid)
                 return View();
 
-            var user = new User(model.Name, model.Username, model.BadgeId, model.UserPrivileges.ToPriviliges());
+            var user = new User(model.Name, model.Username, model.BadgeId, model.IsAdmin);
             try
             {
                 _userService.CreateUser(user, model.Username);
@@ -54,7 +54,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpGet]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult AddMoney()
         {
             var users = _userService.GetAllUsers();
@@ -65,7 +65,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult AddMoney(AddMoneyModel model)
         {
             if (!ModelState.IsValid)
@@ -82,14 +82,14 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpGet]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult EditAccount()
         {
             return View(new EditAccountModel(_userService.GetAllUsers()));
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult EditAccount(EditAccountModel model)
         {
             if (!ModelState.IsValid)
@@ -99,7 +99,7 @@ namespace Drinks.Web.Controllers
         }
 
         [HttpPost]
-        [RequiredPrivileges(UserPermissions.IsAdmin)]
+        [AdminOnly]
         public ActionResult GetUserData(int userId)
         {
             var user = _userService.GetUser(userId);

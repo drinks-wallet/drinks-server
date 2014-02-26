@@ -12,7 +12,7 @@ namespace Drinks.Api.Entities
 
         }
 
-        public BuyResponse(BuyResponseStatus status, string name = null, string balance = null)
+        public BuyResponse(BuyResponseStatus status, string name = null, string balance = null, string badgeId = null)
         {
             switch (status)
             {
@@ -30,7 +30,7 @@ namespace Drinks.Api.Entities
                     break;
                 case BuyResponseStatus.InvalidBadge:
                     Melody = "c5";
-                    Message = new[] { "Invalid", "Badge" };
+                    Message = new[] { "Invalid Badge", badgeId };
                     Time = DateTime.Now.ToUnixTimestamp();
                     Hash = GenerateHash();
                     break;

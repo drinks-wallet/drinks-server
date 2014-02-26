@@ -21,7 +21,7 @@
     </div>
 </div>
 
-@if (UserContext.User.Permissions.HasFlag(UserPermissions.CanMonitorPurchases))
+@if (UserContext.User.IsAdmin)
 {
     <div class="row">
         <div class="col-sm-12">

@@ -17,7 +17,7 @@ namespace Drinks.Tests
             var user = new User
             {
                 Username = "levi.botelho",
-                Permissions = UserPermissions.IsAdmin | UserPermissions.CanMonitorPurchases,
+                IsAdmin = true,
                 Name = "Levi Botelho"
             };
             
@@ -25,16 +25,6 @@ namespace Drinks.Tests
             var userService = new UserService(uow, new PasswordHelper());
             userService.CreateUser(user, "test");
             uow.Dispose();
-        }
-
-        [TestMethod]
-        public void GetUser()
-        {
-            var uow = new UnitOfWork(new DrinksContext());
-            var userService = new UserService(uow, new PasswordHelper());
-            var users = userService.GetAllUsers().ToArray();
-            var i = 0;
-
         }
     }
 }

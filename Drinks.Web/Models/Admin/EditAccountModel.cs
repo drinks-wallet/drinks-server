@@ -24,7 +24,7 @@ namespace Drinks.Web.Models.Admin
         public string Name { get; set; }
         public string Username { get; set; }
         public byte[] Password { get; set; }
-        public UserPermissions Permissions { get; set; }
+        public bool IsAdmin { get; set; }
         public string BadgeId { get; set; }
         public IEnumerable<SelectListItem> Users { get; set; }
         public string SuccessMessage { get; set; }

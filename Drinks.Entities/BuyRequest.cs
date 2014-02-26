@@ -28,12 +28,10 @@ namespace Drinks.Entities
                 throw new InvalidHashException();
         }
 
-        // TODO: Reimplement this after testing.
-        // TODO: Put this in the config.
         void ValidateTimestamp()
         {
-            //if (Time.FromUnixTimestamp().Subtract(DateTime.Now).Duration() > TimeSpan.FromMinutes(5))
-            //    throw new InvalidTimestampException();
+            if (Time.FromUnixTimestamp().Subtract(DateTime.Now).Duration() > TimeSpan.FromMinutes(5))
+                throw new InvalidTimestampException();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Drinks.Api.Controllers
             }
             catch (InvalidBadgeException)
             {
-                return new BuyResponse(BuyResponseStatus.InvalidBadge);
+                return new BuyResponse(BuyResponseStatus.InvalidBadge, badgeId: request.Badge);
             }
             catch (InvalidHashException)
             {

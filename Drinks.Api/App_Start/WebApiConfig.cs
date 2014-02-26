@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 namespace Drinks.Api
 {
+    using System.Web.Http.ExceptionHandling;
+    using Drinks.Api.ExceptionHandling;
     using Drinks.Api.Formatters;
 
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            config.Services.Add(typeof(IExceptionLogger), new DefaultExceptionLogger());
             config.Formatters.Add(new PlainTextFormatter());
 
             // Web API routes
