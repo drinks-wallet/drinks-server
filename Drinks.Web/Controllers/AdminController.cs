@@ -1,16 +1,13 @@
 ﻿using System.Web.Mvc;
+using Drinks.Entities;
+using Drinks.Entities.Exceptions;
+using Drinks.Services;
+using Drinks.Web.Filters;
+using Drinks.Web.Helpers;
+using Drinks.Web.Models.Admin;
 
 namespace Drinks.Web.Controllers
 {
-    using System;
-    using System.Runtime.Remoting.Messaging;
-    using Drinks.Entities;
-    using Drinks.Entities.Exceptions;
-    using Drinks.Services;
-    using Drinks.Web.Filters;
-    using Drinks.Web.Helpers;
-    using Drinks.Web.Models.Admin;
-
     public class AdminController : Controller
     {
         readonly IUserService _userService;
@@ -26,7 +23,7 @@ namespace Drinks.Web.Controllers
         [AdminOnly]
         public ActionResult CreateAccount()
         {
-            var tempData = new TempDataHelper(TempData);
+            var tempData = new TempDataFacade(TempData);
             return string.IsNullOrWhiteSpace(tempData.SuccessMessage) ? View() : View(new CreateAccountModel(tempData.SuccessMessage));
         }
 
@@ -48,7 +45,7 @@ namespace Drinks.Web.Controllers
                 throw;
             }
 
-            var tempData = new TempDataHelper(TempData);
+            var tempData = new TempDataFacade(TempData);
             tempData.SuccessMessage = "The account was created successfully!";
             return RedirectToAction("CreateAccount");
         }
@@ -58,7 +55,7 @@ namespace Drinks.Web.Controllers
         public ActionResult AddMoney()
         {
             var users = _userService.GetAllUsers();
-            var tempData = new TempDataHelper(TempData);
+            var tempData = new TempDataFacade(TempData);
             return string.IsNullOrWhiteSpace(tempData.SuccessMessage) ?
                 View(new AddMoneyModel(users)) :
                 View(new AddMoneyModel(tempData.SuccessMessage, users));
@@ -70,12 +67,12 @@ namespace Drinks.Web.Controllers
         {
             if (!ModelState.IsValid)
                 return View(new AddMoneyModel(_userService.GetAllUsers()));
-            
+
             // ReSharper disable once PossibleInvalidOperationException
             var transaction = new ReloadRequest(model.Amount.Value, model.UserId, UserContext.User.Id);
 
             _transactionService.Reload(transaction);
-            var tempData = new TempDataHelper(TempData);
+            var tempData = new TempDataFacade(TempData);
             tempData.SuccessMessage = _userService.GetUser(model.UserId).Name + "'s account has been credited. The current balance is " +
                                       _userService.GetBalance(model.UserId).ToString("C");
             return RedirectToAction("AddMoney");
@@ -83,9 +80,10 @@ namespace Drinks.Web.Controllers
 
         [HttpGet]
         [AdminOnly]
-        public ActionResult EditAccount()
+        public ActionResult EditAccount(int? selectedUserId)
         {
-            return View(new EditAccountModel(_userService.GetAllUsers()));
+            var tempData = new TempDataFacade(TempData);
+            return View(new EditAccountModel(_userService.GetAllUsers(), selectedUserId) { SuccessMessage = tempData.SuccessMessage });
         }
 
         [HttpPost]
@@ -95,15 +93,36 @@ namespace Drinks.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            return RedirectToAction("EditAccount", true);
+            var user = _userService.GetUser(model.Id);
+            user.IsAdmin = model.IsAdmin;
+            if (!string.IsNullOrWhiteSpace(model.BadgeId))
+                user.BadgeId = model.BadgeId;
+            if (!string.IsNullOrWhiteSpace(model.Name))
+                user.Name = model.Name;
+            if (!string.IsNullOrWhiteSpace(model.Username))
+                user.Username = model.Username;
+            if (!string.IsNullOrWhiteSpace(model.Password))
+                _userService.ResetPassword(user, model.Password);
+            
+            var tempData = new TempDataFacade(TempData);
+            tempData.SuccessMessage = model.Name + "'s account has been updated.";
+            return RedirectToAction("EditAccount", new { selectedUserId = model.Id });
         }
 
-        [HttpPost]
+        [HttpGet]
         [AdminOnly]
-        public ActionResult GetUserData(int userId)
+        public JsonResult GetUserData(int userId)
         {
             var user = _userService.GetUser(userId);
-            return user == null ? Json(false) : Json(new { userId = user.Id, name = user.Name, username = user.Username, badgeId = user.BadgeId });
+            return Json(new
+                        {
+                            userId = user.Id,
+                            name = user.Name,
+                            username = user.Username,
+                            badgeId = user.BadgeId,
+                            isAdmin = user.IsAdmin
+                        },
+                        JsonRequestBehavior.AllowGet);
         }
-	}
+    }
 }

@@ -1,6 +1,4 @@
-﻿@using Drinks.Entities;
-
-@model decimal
+﻿@model decimal
 
 @{
     ViewBag.Title = "Welcome";
@@ -20,16 +18,3 @@
         </div>
     </div>
 </div>
-
-@if (UserContext.User.IsAdmin)
-{
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="well">
-
-                <b>Here you'll be able to see purchases in real time...</b>
-
-            </div>
-        </div>
-    </div>
-}

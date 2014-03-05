@@ -137,23 +137,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\bootswatch.less" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\variables.less" />
-    <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\AngularModules\drinks.js" />
+    <Content Include="_IntelliSense\bootstrap.min.css" />
     <None Include="Properties\PublishProfiles\Drinks Server.pubxml" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
@@ -182,7 +169,7 @@
     <Compile Include="Helpers\AuthenticationHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
-    <Compile Include="Helpers\TempDataHelper.cs" />
+    <Compile Include="Helpers\TempDataFacade.cs" />
     <Compile Include="Models\Admin\AddMoneyModel.cs" />
     <Compile Include="Models\Admin\CreateAccountModel.cs" />
     <Compile Include="Models\Admin\EditAccountModel.cs" />

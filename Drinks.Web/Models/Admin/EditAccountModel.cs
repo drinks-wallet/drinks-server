@@ -6,6 +6,8 @@ using Drinks.Entities;
 
 namespace Drinks.Web.Models.Admin
 {
+    using JetBrains.Annotations;
+
     public class EditAccountModel
     {
         public EditAccountModel() { }
@@ -15,23 +17,34 @@ namespace Drinks.Web.Models.Admin
             Users = GenerateSelectListEnumerable(users, null);
         }
 
-        public EditAccountModel(IEnumerable<User> users, User selectedUser)
+        public EditAccountModel(IEnumerable<User> users, int? selectedUserId)
         {
-            Users = GenerateSelectListEnumerable(users, selectedUser);
+            SelectedUserId = selectedUserId;
+            Users = GenerateSelectListEnumerable(users.OrderBy(x => x.Name), selectedUserId);
         }
-        
+
+        [UsedImplicitly]
         public int Id { get; set; }
+        [UsedImplicitly]
         public string Name { get; set; }
+        [UsedImplicitly]
         public string Username { get; set; }
-        public byte[] Password { get; set; }
+        [UsedImplicitly]
+        public string Password { get; set; }
+        [UsedImplicitly]
         public bool IsAdmin { get; set; }
+        [UsedImplicitly]
         public string BadgeId { get; set; }
+        [UsedImplicitly]
         public IEnumerable<SelectListItem> Users { get; set; }
+        [UsedImplicitly]
+        public int? SelectedUserId { get; set; }
+        [UsedImplicitly]
         public string SuccessMessage { get; set; }
         
-        static IEnumerable<SelectListItem> GenerateSelectListEnumerable(IEnumerable<User> users, User selectedUser)
+        static IEnumerable<SelectListItem> GenerateSelectListEnumerable(IEnumerable<User> users, int? selectedUserId)
         {
-            return selectedUser == null
+            return selectedUserId == null
                 ? users.Select(x =>
                         new SelectListItem
                         {
@@ -41,7 +54,7 @@ namespace Drinks.Web.Models.Admin
                 : users.Select(x =>
                         new SelectListItem
                         {
-                            Selected = x.Id == selectedUser.Id,
+                            Selected = x.Id == selectedUserId,
                             Text = x.Name,
                             Value = x.Id.ToString(CultureInfo.InvariantCulture.NumberFormat)
                         });

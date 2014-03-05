@@ -1,4 +1,5 @@
-﻿@model Drinks.Web.Models.Admin.CreateAccountModel
+﻿@using System.Web.Mvc.Html
+@model Drinks.Web.Models.Admin.CreateAccountModel
 
 @{
     ViewBag.Title = "Create Account";
@@ -52,7 +53,9 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    @Html.EditorFor(x => x.IsAdmin)
+                    <label>
+                        @Html.CheckBoxFor(x => x.IsAdmin) <span class="checkboxText">Is Admin</span>
+                    </label>
                 </div>
             </div>
             <div class="form-group">

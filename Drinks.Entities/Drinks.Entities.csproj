@@ -56,6 +56,7 @@
     <Compile Include="Exceptions\InvalidTimestampException.cs" />
     <Compile Include="Exceptions\InvalidProductException.cs" />
     <Compile Include="Exceptions\InvalidUserCredentialsException.cs" />
+    <Compile Include="Exceptions\InvalidUserIdException.cs" />
     <Compile Include="Exceptions\UserExistsException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />

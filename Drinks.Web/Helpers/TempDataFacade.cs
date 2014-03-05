@@ -2,7 +2,7 @@
 
 namespace Drinks.Web.Helpers
 {
-    public class TempDataHelper
+    public class TempDataFacade
     {
         const string WarningMessageKey = "WarningMessage";
         const string SuccessMessageKey = "SuccessMessage";
@@ -11,7 +11,7 @@ namespace Drinks.Web.Helpers
 
         readonly TempDataDictionary _tempDataDictionary;
 
-        public TempDataHelper(TempDataDictionary tempDataDictionary)
+        public TempDataFacade(TempDataDictionary tempDataDictionary)
         {
             _tempDataDictionary = tempDataDictionary;
         }

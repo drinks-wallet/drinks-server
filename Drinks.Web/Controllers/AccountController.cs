@@ -25,7 +25,7 @@ namespace Drinks.Web.Controllers
         [HttpGet]
         public ActionResult MyProfile()
         {
-            var tempData = new TempDataHelper(TempData);
+            var tempData = new TempDataFacade(TempData);
             return string.IsNullOrWhiteSpace(tempData.SuccessMessage) ? View() : View(new MyProfileModel(tempData.SuccessMessage));
         }
 
@@ -45,7 +45,7 @@ namespace Drinks.Web.Controllers
                 return View();
             }
             
-            var tempData = new TempDataHelper(TempData);
+            var tempData = new TempDataFacade(TempData);
             tempData.SuccessMessage = "Your password has been changed.";
             return RedirectToAction("MyProfile");
         }

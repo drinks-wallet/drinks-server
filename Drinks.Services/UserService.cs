@@ -12,9 +12,10 @@ namespace Drinks.Services
     public interface IUserService
     {
         void ChangePassword(int userId, [NotNull] string oldPassword, [NotNull] string newPassword);
+        void ResetPassword([NotNull] User user, [NotNull] string newPassword);
         void CreateUser([NotNull] User user, [NotNull] string password);
         decimal GetBalance(int userId);
-        [CanBeNull]
+        [NotNull]
         User GetUser(int userId);
         [CanBeNull]
         User GetUserByBadge([NotNull] string badgeId);
@@ -22,7 +23,6 @@ namespace Drinks.Services
         IEnumerable<User> GetAllUsers();
         [NotNull]
         User ValidateUser([NotNull] string username, [NotNull] string password);
-        bool IsBadgeValid([NotNull] string badge);
     }
 
     public class UserService : IUserService
@@ -40,6 +40,11 @@ namespace Drinks.Services
         {
             var user = _drinksContext.Users.Find(userId);
             ValidateUser(user.Username, oldPassword);
+            ResetPassword(user, newPassword);
+        }
+
+        public void ResetPassword(User user, string newPassword)
+        {
             byte[] salt;
             user.Password = _passwordHelper.GenerateHashedPassword(newPassword, out salt);
             user.Salt = salt;
@@ -66,7 +71,11 @@ namespace Drinks.Services
 
         public User GetUser(int userId)
         {
-            return _drinksContext.Users.Find(userId);
+            var user = _drinksContext.Users.Find(userId);
+            if (user == null)
+                throw new InvalidUserIdException();
+
+            return user;
         }
 
         public User GetUserByBadge(string badgeId)
@@ -97,14 +106,9 @@ namespace Drinks.Services
             throw new InvalidUserCredentialsException();
         }
 
-        public bool UserExists(Func<User, bool> predicate)
+        bool UserExists(Func<User, bool> predicate)
         {
             return _drinksContext.Users.Any(predicate);
-        }
-
-        public bool IsBadgeValid(string badge)
-        {
-            return _drinksContext.Users.Any(x => x.BadgeId.Equals(badge, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

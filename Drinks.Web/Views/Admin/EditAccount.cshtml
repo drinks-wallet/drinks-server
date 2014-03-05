@@ -1,5 +1,4 @@
-﻿@using System.Web.UI.WebControls
-@model Drinks.Web.Models.Admin.EditAccountModel
+﻿@model Drinks.Web.Models.Admin.EditAccountModel
 
 @{
     ViewBag.Title = "Add Money";
@@ -30,21 +29,21 @@
     </div>
 }
 
-<div class="row" ng-controller="EditAccountController as controller">
+<div class="row">
     <div class="col-sm-12">
         @using (Html.BeginForm("EditAccount", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             <div class="form-group">
                 <label class="col-sm-2 control-label">User</label>
                 <div class="col-sm-10">
-                    @Html.DropDownListFor(x => x.Id, Model.Users, new { @class = "form-control", ng_model = "controller.userId", ng_change = "controller.getUser()" })
+                    @Html.DropDownListFor(x => x.Id, Model.Users, new { @class = "form-control", data_bind = "value: userId" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Name</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", ng_model = "controller.name" })
+                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", data_bind = "value: name" })
                     </div>
                 </div>
             </div>
@@ -52,7 +51,7 @@
                 <label class="col-sm-2 control-label">Username</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        @Html.TextBoxFor(x => x.Username, new { @class = "form-control", ng_model = "controller.username" })<span class="input-group-addon">@@satimo.fr</span>
+                        @Html.TextBoxFor(x => x.Username, new { @class = "form-control", data_bind = "value: username" })<span class="input-group-addon">@@satimo.fr</span>
                     </div>
                 </div>
             </div>
@@ -68,8 +67,15 @@
                 <label class="col-sm-2 control-label">Badge ID</label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        @Html.TextBoxFor(x => x.BadgeId, new { @class = "form-control", ng_model = "controller.badgeId" })
+                        @Html.TextBoxFor(x => x.BadgeId, new { @class = "form-control", data_bind = "value: badgeId" })
                     </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label>
+                        @Html.CheckBoxFor(x => x.IsAdmin, new { data_bind = "checked: isAdmin" }) <span class="checkboxText">Is Admin</span>
+                    </label>
                 </div>
             </div>
             <div class="form-group">
@@ -80,3 +86,29 @@
         }
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        function ViewModel() {
+            var self = this;
+            self.userId = ko.observable(@Model.SelectedUserId);
+            self.name = ko.observable();
+            self.username = ko.observable();
+            self.badgeId = ko.observable();
+            self.isAdmin = ko.observable();
+
+            self.userId.subscribe(function (newValue) {
+                $.getJSON("@Url.Action("GetUserData", "Admin")", { userId: newValue }, function (user) {
+                    self.name(user.name);
+                    self.username(user.username);
+                    self.badgeId(user.badgeId);
+                    self.isAdmin(user.isAdmin);
+                });
+            });
+        }
+
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+    </script>
+}
