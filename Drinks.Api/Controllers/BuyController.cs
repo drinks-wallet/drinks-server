@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Globalization;
+using System.Web.Http;
 using Drinks.Api.Entities;
 using Drinks.Entities;
 using Drinks.Entities.Exceptions;
@@ -6,17 +7,17 @@ using Drinks.Services;
 
 namespace Drinks.Api.Controllers
 {
-    using System.Globalization;
-
     public class BuyController : ApiController
     {
         readonly ITransactionService _transactionService;
         readonly IUserService _userService;
+        readonly IProductsService _productsService;
 
-        public BuyController(ITransactionService transactionService, IUserService userService)
+        public BuyController(ITransactionService transactionService, IUserService userService, IProductsService productsService)
         {
             _transactionService = transactionService;
             _userService = userService;
+            _productsService = productsService;
         }
 
         public BuyResponse Post(BuyRequest request)
@@ -24,7 +25,18 @@ namespace Drinks.Api.Controllers
             if (request == null)
                 return new BuyResponse(BuyResponseStatus.DeserializationException);
 
+            User user;
+            try
+            {
+                user = _userService.GetUserByBadge(request.Badge);
+            }
+            catch (InvalidBadgeException)
+            {
+                return new BuyResponse(BuyResponseStatus.InvalidBadge, badgeId: request.Badge);
+            }
+
             decimal balance;
+            var isFree = Lottery.IsFree();
             try
             {
                 request.Validate(ConfigurationFacade.RemoteHashKey);
@@ -51,11 +63,28 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.InsufficientFunds);
             }
 
-            var user = _userService.GetUserByBadge(request.Badge);
-            // TODO: Get rid of the thousands separator.
-            return user != null ?
-                new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat)) :
-                new BuyResponse(BuyResponseStatus.Valid);
+            var validResponse = new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat));
+            if (!isFree)
+                return validResponse;
+
+            try
+            {
+                Reimburse(request, user.Id);
+            }
+            catch
+            {
+                // If there is a reimbursement error, the person is informed that they have purchased their product.
+                return validResponse;
+            }
+
+            return new BuyResponse(BuyResponseStatus.Free);
+        }
+
+        void Reimburse(BuyRequest request, int userId)
+        {
+            var price = _productsService.GetProduct(request.Product).Price;
+            var reimbursementRequest = new ReloadRequest(price, userId, -1);
+            _transactionService.Reload(reimbursementRequest);
         }
     }
 }

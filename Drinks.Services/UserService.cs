@@ -17,7 +17,7 @@ namespace Drinks.Services
         decimal GetBalance(int userId);
         [NotNull]
         User GetUser(int userId);
-        [CanBeNull]
+        [NotNull]
         User GetUserByBadge([NotNull] string badgeId);
         [NotNull]
         IEnumerable<User> GetAllUsers();
@@ -80,7 +80,14 @@ namespace Drinks.Services
 
         public User GetUserByBadge(string badgeId)
         {
-            return _drinksContext.Users.SingleOrDefault(x => x.BadgeId.Equals(badgeId, StringComparison.InvariantCultureIgnoreCase));
+            try
+            {
+                return _drinksContext.Users.Single(x => x.BadgeId.Equals(badgeId, StringComparison.InvariantCultureIgnoreCase));
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidBadgeException();
+            }
         }
 
         public IEnumerable<User> GetAllUsers()

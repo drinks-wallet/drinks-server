@@ -8,6 +8,7 @@
         InvalidHash,
         InvalidProduct,
         InvalidTimestamp,
-        DeserializationException
+        DeserializationException,
+        Free
     }
 }

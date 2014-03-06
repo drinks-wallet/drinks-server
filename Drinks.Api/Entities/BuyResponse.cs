@@ -58,6 +58,12 @@ namespace Drinks.Api.Entities
                     Time = DateTime.Now.ToUnixTimestamp();
                     Hash = GenerateHash();
                     break;
+                case BuyResponseStatus.Free:
+                    Melody = "C4a2g2C3S3C4a2g2C3S3C4a2g2C3S3C4a2g2C3";
+                    Message = new[] { "!!! You win !!!", "!!! Party time !!!" };
+                    Time = DateTime.Now.ToUnixTimestamp();
+                    Hash = GenerateHash();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException("requestStatus");
             }

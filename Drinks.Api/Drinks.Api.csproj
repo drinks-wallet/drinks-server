@@ -154,6 +154,7 @@
     <Compile Include="Controllers\BuyController.cs" />
     <Compile Include="Entities\BuyResponse.cs" />
     <Compile Include="Entities\BuyResponseStatus.cs" />
+    <Compile Include="Entities\Lottery.cs" />
     <Compile Include="Entities\SyncResponse.cs" />
     <Compile Include="Entities\TerminalResponseBase.cs" />
     <Compile Include="ExceptionHandling\DefaultExceptionLogger.cs" />

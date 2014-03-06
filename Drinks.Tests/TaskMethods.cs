@@ -1,13 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Drinks.Entities;
+using Drinks.Repository;
+using Drinks.Services;
 
 namespace Drinks.Tests
 {
-    using System.Linq;
-    using Drinks.Entities;
-    using Drinks.Repository;
-    using Drinks.Services;
-
     [TestClass]
     public class TaskMethods
     {
@@ -20,7 +17,7 @@ namespace Drinks.Tests
                 IsAdmin = true,
                 Name = "Levi Botelho"
             };
-            
+
             var uow = new UnitOfWork(new DrinksContext());
             var userService = new UserService(uow, new PasswordHelper());
             userService.CreateUser(user, "test");

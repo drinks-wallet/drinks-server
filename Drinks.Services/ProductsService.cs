@@ -1,17 +1,16 @@
-﻿using Drinks.Repository;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Drinks.Entities;
-using System.Linq;
+using Drinks.Entities.Exceptions;
+using Drinks.Repository;
+using JetBrains.Annotations;
 
 namespace Drinks.Services
 {
-    using JetBrains.Annotations;
-
     public interface IProductsService
     {
         [NotNull]
         IEnumerable<Product> GetAllProducts();
-        [CanBeNull]
+        [NotNull]
         Product GetProduct(byte id);
     }
 
@@ -32,7 +31,11 @@ namespace Drinks.Services
 
         public Product GetProduct(byte id)
         {
-            return _drinksContext.Products.Find(id);
+            var product = _drinksContext.Products.Find(id);
+            if (product == null)
+                throw new InvalidProductException();
+
+            return product;
         }
     }
 }
