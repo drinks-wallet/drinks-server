@@ -8,7 +8,7 @@ namespace Drinks.Api.Entities
 
         public static bool IsFree()
         {
-            return Random.Next(50) == 0;
+            return Random.Next(30) == 0;
         }
     }
 }
