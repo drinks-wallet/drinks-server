@@ -1,11 +1,10 @@
 ﻿using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
+using Drinks.Api.ExceptionHandling;
+using Drinks.Api.Formatters;
 
 namespace Drinks.Api
 {
-    using System.Web.Http.ExceptionHandling;
-    using Drinks.Api.ExceptionHandling;
-    using Drinks.Api.Formatters;
-
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

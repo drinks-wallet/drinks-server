@@ -4,7 +4,7 @@ namespace Drinks.Api.Entities
 {
     public static class Lottery
     {
-        const int Odds = 1;
+        const int Odds = 20;
 
         static readonly Random Random = new Random();
 

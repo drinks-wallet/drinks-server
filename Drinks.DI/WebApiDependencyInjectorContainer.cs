@@ -11,13 +11,11 @@ namespace Drinks.DI
     {
         public static IDependencyResolver GetDependencyResolver(IEnumerable<Type> controllerTypes)
         {
-            Container = new Container();
             foreach (var controllerType in controllerTypes)
             {
                 Container.Register(controllerType);
             }
 
-            RegisterServices();
             Container.Verify();
             return new SimpleInjectorWebApiDependencyResolver(Container);
         }

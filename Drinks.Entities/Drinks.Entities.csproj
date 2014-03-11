@@ -60,7 +60,7 @@
     <Compile Include="Exceptions\UserExistsException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
-    <Compile Include="Logging\LogItem.cs" />
+    <Compile Include="LogItem.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transaction.cs" />

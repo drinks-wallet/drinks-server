@@ -1,9 +1,10 @@
-using Drinks.Entities.Logging;
 using Drinks.Repository;
 using JetBrains.Annotations;
 
 namespace Drinks.Services
 {
+    using Drinks.Entities;
+
     public interface ILogService
     {
         [UsedImplicitly]

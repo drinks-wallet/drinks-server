@@ -7,11 +7,6 @@ namespace Drinks.Api.Entities
 
     public class BuyResponse : TerminalResponseBase
     {
-        public BuyResponse()
-        {
-
-        }
-
         public BuyResponse(BuyResponseStatus status, string name = null, string balance = null, string badgeId = null)
         {
             switch (status)

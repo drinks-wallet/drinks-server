@@ -3,7 +3,6 @@
     using System;
     using System.Data.Entity;
     using Drinks.Entities;
-    using Drinks.Entities.Logging;
 
     public interface IDrinksContext : IDisposable
     {

@@ -1,4 +1,6 @@
 ﻿using System.Web.Http.ExceptionHandling;
+using Drinks.DI;
+using Drinks.Services;
 
 namespace Drinks.Api.ExceptionHandling
 {
@@ -6,7 +8,7 @@ namespace Drinks.Api.ExceptionHandling
     {
         public override void Log(ExceptionLoggerContext context)
         {
-            ApiLogger.Log(context.ExceptionContext.Exception.ToString());
+            MvcDependencyInjectorContainer.Resolve<ILogService>().Log(context.ExceptionContext.Exception.ToString());
         }
     }
 }

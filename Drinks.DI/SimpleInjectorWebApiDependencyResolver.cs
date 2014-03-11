@@ -10,8 +10,7 @@ namespace Drinks.DI
     {
         readonly Container _container;
 
-        public SimpleInjectorWebApiDependencyResolver(
-            Container container)
+        public SimpleInjectorWebApiDependencyResolver(Container container)
         {
             _container = container;
         }

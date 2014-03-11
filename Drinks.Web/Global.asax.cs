@@ -2,12 +2,10 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Drinks.Web.App_Start;
+using System.Web.Optimization;
 
 namespace Drinks.Web
 {
-    using System.Web.Optimization;
-    using Drinks.Web.CustomModelBinders;
-
     public class MvcApplication : HttpApplication
     {
         protected void Application_Start()

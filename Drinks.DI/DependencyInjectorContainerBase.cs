@@ -6,15 +6,20 @@ namespace Drinks.DI
 {
     public abstract class DependencyInjectorContainerBase
     {
+        protected static readonly Container Container = new Container();
+
+        static DependencyInjectorContainerBase()
+        {
+            RegisterServices();
+        }
+
         public static T Resolve<T>()
             where T : class
         {
             return Container.GetInstance<T>();
         }
         
-        public static Container Container { get; protected set; }
-
-        protected static void RegisterServices()
+        static void RegisterServices()
         {
             Container.RegisterPerWebRequest<IProductsService, ProductsService>();
             Container.RegisterPerWebRequest<ITransactionService, TransactionService>();

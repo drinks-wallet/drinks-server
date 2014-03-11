@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Web.Http;
 using Drinks.Api.Entities;
 using Drinks.Entities;
@@ -7,19 +8,20 @@ using Drinks.Services;
 
 namespace Drinks.Api.Controllers
 {
-    using System;
 
     public class BuyController : ApiController
     {
         readonly ITransactionService _transactionService;
         readonly IUserService _userService;
         readonly IProductsService _productsService;
+        readonly ILogService _logService;
 
-        public BuyController(ITransactionService transactionService, IUserService userService, IProductsService productsService)
+        public BuyController(ITransactionService transactionService, IUserService userService, IProductsService productsService, ILogService logService)
         {
             _transactionService = transactionService;
             _userService = userService;
             _productsService = productsService;
+            _logService = logService;
         }
 
         public BuyResponse Post(BuyRequest request)
@@ -41,7 +43,7 @@ namespace Drinks.Api.Controllers
             var isFree = Lottery.IsFree();
             try
             {
-                //request.Validate(ConfigurationFacade.RemoteHashKey);
+                request.Validate(ConfigurationFacade.RemoteHashKey);
                 balance = _transactionService.Buy(request);
             }
             catch (InvalidBadgeException)
@@ -65,7 +67,7 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.InsufficientFunds);
             }
 
-            BuyResponse validResponse = null;// new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat));
+            var validResponse = new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat));
             if (!isFree)
                 return validResponse;
 
@@ -75,7 +77,7 @@ namespace Drinks.Api.Controllers
             }
             catch (Exception e)
             {
-                ApiLogger.Log(e.ToString());
+                _logService.Log(e.ToString());
                 return validResponse;
             }
 

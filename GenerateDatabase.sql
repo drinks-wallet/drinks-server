@@ -11,9 +11,16 @@ GO
 SET ANSI_PADDING OFF
 GO
 
+CREATE TABLE [dbo].[Log](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Message] [varchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
 CREATE TABLE [dbo].[Products](
 	[Id] [tinyint] IDENTITY(0,1) NOT NULL,
-	[Name] [varchar](11) NOT NULL,
+	[Name] [varchar](12) NULL,
 	[Price] [money] NOT NULL
 ) ON [PRIMARY]
 
@@ -37,8 +44,8 @@ CREATE TABLE [dbo].[Users](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](64) NOT NULL,
 	[Username] [nvarchar](128) NOT NULL,
-	[Password] [binary](64) NOT NULL,
-	[Salt] [binary](64) NOT NULL,
+	[Password] [binary](64) NULL,
+	[Salt] [binary](64) NULL,
 	[IsAdmin] [bit] NOT NULL,
 	[BadgeId] [varchar](16) NULL,
 UNIQUE NONCLUSTERED 
@@ -54,5 +61,16 @@ AS SELECT u.id Id, SUM(t.Amount) Balance
 FROM Users u JOIN Transactions t
 	ON u.Id = t.UserId
 GROUP BY u.Id
+
+GO
+
+CREATE View [dbo].[BestCustomers]
+AS
+SELECT SUM(Amount) as Total, Name
+FROM Transactions
+JOIN Users
+	ON Users.Id = UserId
+WHERE Amount < 0
+GROUP BY Name
 
 GO
