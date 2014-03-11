@@ -4,11 +4,13 @@ namespace Drinks.Api.Entities
 {
     public static class Lottery
     {
+        const int Odds = 1;
+
         static readonly Random Random = new Random();
 
         public static bool IsFree()
         {
-            return Random.Next(30) == 0;
+            return Random.Next(Odds) == 0;
         }
     }
 }

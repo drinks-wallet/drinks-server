@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Drinks.DI;
+﻿using Drinks.DI;
 
 namespace Drinks.Web.App_Start
 {

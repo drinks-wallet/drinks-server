@@ -7,6 +7,8 @@ using Drinks.Services;
 
 namespace Drinks.Api.Controllers
 {
+    using System;
+
     public class BuyController : ApiController
     {
         readonly ITransactionService _transactionService;
@@ -39,7 +41,7 @@ namespace Drinks.Api.Controllers
             var isFree = Lottery.IsFree();
             try
             {
-                request.Validate(ConfigurationFacade.RemoteHashKey);
+                //request.Validate(ConfigurationFacade.RemoteHashKey);
                 balance = _transactionService.Buy(request);
             }
             catch (InvalidBadgeException)
@@ -63,7 +65,7 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.InsufficientFunds);
             }
 
-            var validResponse = new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat));
+            BuyResponse validResponse = null;// new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat));
             if (!isFree)
                 return validResponse;
 
@@ -71,9 +73,9 @@ namespace Drinks.Api.Controllers
             {
                 Reimburse(request, user.Id);
             }
-            catch
+            catch (Exception e)
             {
-                // If there is a reimbursement error, the person is informed that they have purchased their product.
+                ApiLogger.Log(e.ToString());
                 return validResponse;
             }
 

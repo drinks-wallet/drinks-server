@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="WebApiDependencyInjectorContainer.cs" />
     <Compile Include="MvcDependencyInjectorContainer.cs" />
     <Compile Include="DependencyInjectorContainerBase.cs" />
