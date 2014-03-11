@@ -30,25 +30,17 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.DeserializationException);
 
             User user;
-            try
-            {
-                user = _userService.GetUserByBadge(request.Badge);
-            }
-            catch (InvalidBadgeException)
-            {
-                return new BuyResponse(BuyResponseStatus.InvalidBadge, badgeId: request.Badge);
-            }
-
             decimal balance;
             var isFree = Lottery.IsFree();
             try
             {
+                user = _userService.GetUserByBadge(request.Badge);
                 request.Validate(ConfigurationFacade.RemoteHashKey);
                 balance = _transactionService.Buy(request);
             }
             catch (InvalidBadgeException)
             {
-                return new BuyResponse(BuyResponseStatus.InvalidBadge, badgeId: request.Badge);
+                return new BuyResponse(request.Badge);
             }
             catch (InvalidHashException)
             {
@@ -67,7 +59,8 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.InsufficientFunds);
             }
 
-            var validResponse = new BuyResponse(BuyResponseStatus.Valid, user.Name, balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat));
+            var balanceString = balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat);
+            var validResponse = new BuyResponse(user.Name, balanceString, request.Product);
             if (!isFree)
                 return validResponse;
 

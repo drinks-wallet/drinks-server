@@ -1,31 +1,56 @@
-﻿using Drinks.SipHasher;
+﻿using System;
+using System.Collections.Generic;
+using Drinks.Entities.Extensions;
+using Drinks.SipHasher;
+using JetBrains.Annotations;
 
 namespace Drinks.Api.Entities
 {
-    using System;
-    using Drinks.Entities.Extensions;
-
     public class BuyResponse : TerminalResponseBase
     {
-        public BuyResponse(BuyResponseStatus status, string name = null, string balance = null, string badgeId = null)
+        static readonly IReadOnlyDictionary<int, string> Melodies = new Dictionary<int, string>
+        {
+            { -1, "a1b1c1d1e1f1g1" }, { 0, "a1b1c1d1e1f1g1" }, { 1, "a1c1a1c1a1c1a1c1" }, { 2, "g1f1e1d1c1b1a1" }
+        };
+
+        [UsedImplicitly]
+        public readonly string Melody;
+        [UsedImplicitly]
+        public readonly string[] Message;
+        [UsedImplicitly]
+        public readonly int Time;
+        [UsedImplicitly]
+        public readonly string Hash;
+
+        /// <summary>
+        /// Instantiates an instance of a "Valid" BuyResponse.
+        /// </summary>
+        public BuyResponse(string name, string balance, int productId)
+        {
+            Melody = GetMelody(productId);
+            Message = new[] { RemoveDiacritics(name), balance };
+            Time = DateTime.Now.ToUnixTimestamp();
+            Hash = GenerateHash();
+        }
+
+        /// <summary>
+        /// Instantiates an instance of an "Invalid Badge" BuyResponse
+        /// </summary>
+        public BuyResponse(string badgeId)
+        {
+            Melody = "c5";
+            Message = new[] { "Invalid Badge", badgeId };
+            Time = DateTime.Now.ToUnixTimestamp();
+            Hash = GenerateHash();
+        }
+        
+        public BuyResponse(BuyResponseStatus status)
         {
             switch (status)
             {
-                case BuyResponseStatus.Valid:
-                    Melody = "a1b1c1d1e1f1g1";
-                    Message = new[] { RemoveDiacritics(name), balance };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
-                    break;
                 case BuyResponseStatus.InsufficientFunds:
                     Melody = "c5";
                     Message = new[] { "Insufficient", "Funds" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
-                    break;
-                case BuyResponseStatus.InvalidBadge:
-                    Melody = "c5";
-                    Message = new[] { "Invalid Badge", badgeId };
                     Time = DateTime.Now.ToUnixTimestamp();
                     Hash = GenerateHash();
                     break;
@@ -60,14 +85,14 @@ namespace Drinks.Api.Entities
                     Hash = GenerateHash();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("requestStatus");
+                    throw new ArgumentOutOfRangeException("status", "Valid and Invalid Badge responses must be generated with the appropriate constructor.");
             }
         }
 
-        public string Melody { get; set; }
-        public string[] Message { get; set; }
-        public int Time { get; set; }
-        public string Hash { get; set; }
+        static string GetMelody(int productId)
+        {
+            return (!Melodies.ContainsKey(productId)) ? Melodies[-1] : Melodies[productId];
+        }
 
         string GenerateHash()
         {
