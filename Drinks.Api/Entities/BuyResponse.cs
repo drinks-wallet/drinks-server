@@ -10,7 +10,7 @@ namespace Drinks.Api.Entities
     {
         static readonly IReadOnlyDictionary<int, string> Melodies = new Dictionary<int, string>
         {
-            { -1, "a1b1c1d1e1f1g1" }, { 0, "a1b1c1d1e1f1g1" }, { 1, "a1c1a1c1a1c1a1c1" }, { 2, "g1f1e1d1c1b1a1" }
+            { -1, "a1b1c1d1e1f1g1" }, { 0, "a1b1c1d1e1f1g1" }, { 1, "a1c1a1c1a1c1a1c1" }, { 2, "e2g2E2C2D2G2" }
         };
 
         [UsedImplicitly]

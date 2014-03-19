@@ -166,6 +166,7 @@
     <Compile Include="Entities\SyncResponse.cs" />
     <Compile Include="Entities\TerminalResponseBase.cs" />
     <Compile Include="ExceptionHandling\DefaultExceptionLogger.cs" />
+    <Compile Include="ExceptionHandling\ExceptionHandlingAttribute.cs" />
     <Compile Include="Formatters\PlainTextFormatter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
