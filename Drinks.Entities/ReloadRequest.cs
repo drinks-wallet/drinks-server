@@ -3,8 +3,6 @@
  *
  * Copyright © Satimo 2014 All Rights Reserved, http://satimo.fr/
  */
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 
 namespace Drinks.Entities
