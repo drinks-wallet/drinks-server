@@ -13,8 +13,6 @@ namespace Drinks.Entities
     {
         public ReloadRequest(decimal amount, int userId, int executorUserId)
         {
-            if (amount <= 0)
-                throw new ArgumentException("amount must be greater than 0");
             Amount = amount;
             UserId = userId;
             ExecutorUserId = executorUserId;
