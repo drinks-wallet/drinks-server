@@ -1,10 +1,10 @@
-﻿namespace Drinks.Services
-{
-    using System;
-    using Drinks.Entities;
-    using Drinks.Entities.Exceptions;
-    using Drinks.Repository;
+﻿using System;
+using Drinks.Entities;
+using Drinks.Entities.Exceptions;
+using Drinks.Repository;
 
+namespace Drinks.Services
+{
     public interface ITransactionService
     {
         decimal Reload(ReloadRequest reloadRequest);
@@ -63,7 +63,8 @@
                 throw new InvalidProductException();
             if (product.Price > balance)
                 throw new InsufficientFundsException();
-            return new Transaction(-product.Price, user.Id, user.Id);
+            var price = ApplyDiscount(product.Price, user.DiscountPercentage);
+            return new Transaction(-price, user.Id, user.Id);
         }
 
         Transaction GenerateTransaction(ReloadRequest request)
@@ -74,6 +75,11 @@
             if (!executingUser.IsAdmin)
                 throw new InsufficientPermissionsException();
             return new Transaction(request.Amount, request.UserId, request.ExecutorUserId);
+        }
+
+        static decimal ApplyDiscount(decimal price, decimal discountPercentage)
+        {
+            return discountPercentage == 0 ? price : price - price * discountPercentage / 100;
         }
     }
 }

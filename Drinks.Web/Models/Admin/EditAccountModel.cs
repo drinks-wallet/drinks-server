@@ -3,11 +3,10 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Drinks.Entities;
+using JetBrains.Annotations;
 
 namespace Drinks.Web.Models.Admin
 {
-    using JetBrains.Annotations;
-
     public class EditAccountModel
     {
         public EditAccountModel() { }
@@ -41,7 +40,9 @@ namespace Drinks.Web.Models.Admin
         public int? SelectedUserId { get; set; }
         [UsedImplicitly]
         public string SuccessMessage { get; set; }
-        
+        [UsedImplicitly]
+        public int DiscountPercentage { get; set; }
+
         static IEnumerable<SelectListItem> GenerateSelectListEnumerable(IEnumerable<User> users, int? selectedUserId)
         {
             return selectedUserId == null

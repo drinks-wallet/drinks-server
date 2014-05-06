@@ -8,8 +8,13 @@ using Drinks.Web.Models.Admin;
 
 namespace Drinks.Web.Controllers
 {
+    using System;
+
     public class AdminController : Controller
     {
+        const int MinDiscount = 0;
+        const int MaxDiscount = 10;
+
         readonly IUserService _userService;
         readonly ITransactionService _transactionService;
 
@@ -101,9 +106,11 @@ namespace Drinks.Web.Controllers
                 user.Name = model.Name;
             if (!string.IsNullOrWhiteSpace(model.Username))
                 user.Username = model.Username;
+            if (!string.IsNullOrWhiteSpace(model.Username))
+                user.DiscountPercentage = Math.Max(MinDiscount, Math.Min(MaxDiscount, model.DiscountPercentage));
             if (!string.IsNullOrWhiteSpace(model.Password))
                 _userService.ResetPassword(user, model.Password);
-            
+
             var tempData = new TempDataFacade(TempData);
             tempData.SuccessMessage = model.Name + "'s account has been updated.";
             return RedirectToAction("EditAccount", new { selectedUserId = model.Id });
@@ -114,15 +121,16 @@ namespace Drinks.Web.Controllers
         public JsonResult GetUserData(int userId)
         {
             var user = _userService.GetUser(userId);
-            return Json(new
-                        {
-                            userId = user.Id,
-                            name = user.Name,
-                            username = user.Username,
-                            badgeId = user.BadgeId,
-                            isAdmin = user.IsAdmin
-                        },
-                        JsonRequestBehavior.AllowGet);
+            var userJson = new
+            {
+                userId = user.Id,
+                name = user.Name,
+                username = user.Username,
+                badgeId = user.BadgeId,
+                isAdmin = user.IsAdmin,
+                discountPercentage = user.DiscountPercentage
+            };
+            return Json(userJson, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Drinks.Entities
     {
         public Transaction(decimal amount, int userId, int executorUserId)
         {
-            Amount = amount;
+            Amount = Math.Round(amount, 2);
             UserId = userId;
             ExecutorUserId = executorUserId;
         }

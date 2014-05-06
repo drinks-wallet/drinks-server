@@ -11,6 +11,7 @@ namespace Drinks.Entities
         public byte[] Salt { get; set; }
         public bool IsAdmin { get; set; }
         public string BadgeId { get; set; }
+        public int DiscountPercentage { get; set; }
 
         public User() { }
 
