@@ -63,7 +63,7 @@ namespace Drinks.Api.Controllers
 
             try
             {
-                Reimburse(buyReceipt.TransactionAmount, user.Id);
+                Reimburse(buyReceipt.AmountDebited, user.Id);
             }
             catch (Exception e)
             {

@@ -3,12 +3,12 @@ namespace Drinks.Entities
     public class BuyReceipt
     {
         public readonly decimal NewBalance;
-        public readonly decimal TransactionAmount;
+        public readonly decimal AmountDebited;
 
-        public BuyReceipt(decimal newBalance, decimal transactionAmount)
+        public BuyReceipt(decimal newBalance, decimal amountDebited)
         {
             NewBalance = newBalance;
-            TransactionAmount = transactionAmount;
+            AmountDebited = amountDebited;
         }
     }
 }

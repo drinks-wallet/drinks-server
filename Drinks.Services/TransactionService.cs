@@ -48,7 +48,7 @@ namespace Drinks.Services
             }
             
             var newBalance = _userService.GetBalance(transaction.UserId);
-            return new BuyReceipt(newBalance, transaction.Amount);
+            return new BuyReceipt(newBalance, -transaction.Amount);
         }
 
         Transaction GenerateTransaction(BuyRequest request)
