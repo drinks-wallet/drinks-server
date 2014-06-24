@@ -48,6 +48,7 @@ CREATE TABLE [dbo].[Users](
 	[Salt] [binary](64) NULL,
 	[IsAdmin] [bit] NOT NULL,
 	[BadgeId] [varchar](16) NULL,
+	[DiscountPercentage] [int] NOT NULL DEFAULT ((0)),
 UNIQUE NONCLUSTERED 
 (
 	[BadgeId] ASC
