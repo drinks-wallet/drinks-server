@@ -8,7 +8,7 @@ namespace Drinks.Services
     public interface ITransactionService
     {
         decimal Reload(ReloadRequest reloadRequest);
-        decimal Buy(BuyRequest request);
+        BuyReceipt Buy(BuyRequest request);
     }
 
     public class TransactionService : ITransactionService
@@ -28,7 +28,6 @@ namespace Drinks.Services
 
         public decimal Reload(ReloadRequest request)
         {
-            // TODO: Robustify this (maybe in the DB with a stored procedure).
             lock (_transactionLock)
             {
                 _drinksContext.Transactions.Add(GenerateTransaction(request));
@@ -38,18 +37,18 @@ namespace Drinks.Services
             return _userService.GetBalance(request.UserId);
         }
 
-        public decimal Buy(BuyRequest request)
+        public BuyReceipt Buy(BuyRequest request)
         {
-            int userId;
+            Transaction transaction;
             lock (_transactionLock)
             {
-                var transaction = GenerateTransaction(request);
-                userId = transaction.UserId;
+                transaction = GenerateTransaction(request);
                 _drinksContext.Transactions.Add(transaction);
                 _drinksContext.SaveChanges();
             }
-
-            return _userService.GetBalance(userId);
+            
+            var newBalance = _userService.GetBalance(transaction.UserId);
+            return new BuyReceipt(newBalance, transaction.Amount);
         }
 
         Transaction GenerateTransaction(BuyRequest request)
@@ -61,9 +60,9 @@ namespace Drinks.Services
             var product = _productsService.GetProduct(request.Product);
             if (product == null)
                 throw new InvalidProductException();
-            if (product.Price > balance)
-                throw new InsufficientFundsException();
             var price = ApplyDiscount(product.Price, user.DiscountPercentage);
+            if (price > balance)
+                throw new InsufficientFundsException();
             return new Transaction(-price, user.Id, user.Id);
         }
 

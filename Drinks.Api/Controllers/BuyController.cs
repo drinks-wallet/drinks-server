@@ -8,19 +8,16 @@ using Drinks.Services;
 
 namespace Drinks.Api.Controllers
 {
-
     public class BuyController : ApiController
     {
         readonly ITransactionService _transactionService;
         readonly IUserService _userService;
-        readonly IProductsService _productsService;
         readonly ILogService _logService;
 
-        public BuyController(ITransactionService transactionService, IUserService userService, IProductsService productsService, ILogService logService)
+        public BuyController(ITransactionService transactionService, IUserService userService, ILogService logService)
         {
             _transactionService = transactionService;
             _userService = userService;
-            _productsService = productsService;
             _logService = logService;
         }
 
@@ -30,13 +27,13 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.DeserializationException);
 
             User user;
-            decimal balance;
+            BuyReceipt buyReceipt;
             var isFree = Lottery.IsFree();
             try
             {
                 user = _userService.GetUserByBadge(request.Badge);
                 request.Validate(ConfigurationFacade.RemoteHashKey);
-                balance = _transactionService.Buy(request);
+                buyReceipt = _transactionService.Buy(request);
             }
             catch (InvalidBadgeException)
             {
@@ -59,14 +56,14 @@ namespace Drinks.Api.Controllers
                 return new BuyResponse(BuyResponseStatus.InsufficientFunds);
             }
 
-            var balanceString = balance.ToString("N", CultureInfo.InvariantCulture.NumberFormat);
+            var balanceString = buyReceipt.NewBalance.ToString("N", CultureInfo.InvariantCulture.NumberFormat);
             var validResponse = new BuyResponse(user.Name, balanceString, request.Product);
             if (!isFree)
                 return validResponse;
 
             try
             {
-                Reimburse(request, user.Id);
+                Reimburse(buyReceipt.TransactionAmount, user.Id);
             }
             catch (Exception e)
             {
@@ -77,10 +74,9 @@ namespace Drinks.Api.Controllers
             return new BuyResponse(BuyResponseStatus.Free);
         }
 
-        void Reimburse(BuyRequest request, int userId)
+        void Reimburse(decimal amount, int userId)
         {
-            var price = _productsService.GetProduct(request.Product).Price;
-            var reimbursementRequest = new ReloadRequest(price, userId, -1);
+            var reimbursementRequest = new ReloadRequest(amount, userId, -1);
             _transactionService.Reload(reimbursementRequest);
         }
     }

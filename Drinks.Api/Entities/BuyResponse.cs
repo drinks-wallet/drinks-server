@@ -8,11 +8,9 @@ namespace Drinks.Api.Entities
 {
     public class BuyResponse : TerminalResponseBase
     {
-        static readonly IReadOnlyDictionary<int, string> Melodies = new Dictionary<int, string>
-        {
-            { -1, "a1b1c1d1e1f1g1" }, { 0, "a1b1c1d1e1f1g1" }, { 1, "a1c1a1c1a1c1a1c1" }, { 2, "e2g2E2C2D2G2" }
-        };
-
+        const string ErrorMelody = "c5";
+        const string FreeMelody = "C4a2g2C3S3C4a2g2C3S3C4a2g2C3S3C4a2g2C3";
+        
         [UsedImplicitly]
         public readonly string Melody;
         [UsedImplicitly]
@@ -21,6 +19,18 @@ namespace Drinks.Api.Entities
         public readonly int Time;
         [UsedImplicitly]
         public readonly string Hash;
+
+        static readonly IReadOnlyDictionary<int, string> ProductMelodies = new Dictionary<int, string>
+        {
+            { -1, "a1b1c1d1e1f1g1" }, { 0, "a1b1c1d1e1f1g1" }, { 1, "a1c1a1c1a1c1a1c1" }, { 2, "e2g2E2C2D2G2" }
+        };
+        
+        readonly string[] InsufficientFundsMessage = { "Insufficient", "Funds" };
+        readonly string[] InvalidHashMessage = { "Invalid", "Hash" };
+        readonly string[] InvalidProductMessage = { "Invalid", "Product" };
+        readonly string[] InvalidTimestampMessage = { "Invalid", "Time" };
+        readonly string[] DeserializationExceptionMessage = { "Deserialization", "Exception" };
+        readonly string[] FreeMessage = { "!!! You win !!!", "!!! Party time !!!" };
 
         /// <summary>
         /// Instantiates an instance of a "Valid" BuyResponse.
@@ -38,7 +48,7 @@ namespace Drinks.Api.Entities
         /// </summary>
         public BuyResponse(string badgeId)
         {
-            Melody = "c5";
+            Melody = ErrorMelody;
             Message = new[] { "Invalid Badge", badgeId };
             Time = DateTime.Now.ToUnixTimestamp();
             Hash = GenerateHash();
@@ -49,49 +59,40 @@ namespace Drinks.Api.Entities
             switch (status)
             {
                 case BuyResponseStatus.InsufficientFunds:
-                    Melody = "c5";
-                    Message = new[] { "Insufficient", "Funds" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
+                    Melody = ErrorMelody;
+                    Message = InsufficientFundsMessage;
                     break;
                 case BuyResponseStatus.InvalidHash:
-                    Melody = "c5";
-                    Message = new[] { "Invalid", "Hash" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
+                    Melody = ErrorMelody;
+                    Message = InvalidHashMessage;
                     break;
                 case BuyResponseStatus.InvalidProduct:
-                    Melody = "c5";
-                    Message = new[] { "Invalid", "Product" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
+                    Melody = ErrorMelody;
+                    Message = InvalidProductMessage;
                     break;
                 case BuyResponseStatus.InvalidTimestamp:
-                    Melody = "c5";
-                    Message = new[] { "Invalid", "Time" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
+                    Melody = ErrorMelody;
+                    Message = InvalidTimestampMessage;
                     break;
                 case BuyResponseStatus.DeserializationException:
-                    Melody = "c5";
-                    Message = new[] { "Deserialization", "Exception" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
+                    Melody = ErrorMelody;
+                    Message = DeserializationExceptionMessage;
                     break;
                 case BuyResponseStatus.Free:
-                    Melody = "C4a2g2C3S3C4a2g2C3S3C4a2g2C3S3C4a2g2C3";
-                    Message = new[] { "!!! You win !!!", "!!! Party time !!!" };
-                    Time = DateTime.Now.ToUnixTimestamp();
-                    Hash = GenerateHash();
+                    Melody = FreeMelody;
+                    Message = FreeMessage;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("status", "Valid and Invalid Badge responses must be generated with the appropriate constructor.");
             }
+
+            Time = DateTime.Now.ToUnixTimestamp();
+            Hash = GenerateHash();
         }
 
         static string GetMelody(int productId)
         {
-            return (!Melodies.ContainsKey(productId)) ? Melodies[-1] : Melodies[productId];
+            return (!ProductMelodies.ContainsKey(productId)) ? ProductMelodies[-1] : ProductMelodies[productId];
         }
 
         string GenerateHash()

@@ -35,7 +35,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuyRequest.cs" />
+    <Compile Include="BuyReceipt.cs" />
     <Compile Include="Exceptions\InsufficientFundsException.cs" />
     <Compile Include="Exceptions\InsufficientPermissionsException.cs" />
     <Compile Include="Exceptions\InvalidBadgeException.cs" />
@@ -67,15 +68,14 @@
     <Compile Include="ReloadRequest.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Drinks.SipHash\Drinks.SipHasher.csproj">
       <Project>{88595dc2-7960-41c7-842b-00d016d1d345}</Project>
       <Name>Drinks.SipHasher</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
